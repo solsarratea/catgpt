@@ -1,5 +1,7 @@
 varying vec2 vUv;
+uniform sampler2D uWebcamTexture;
 
 void main() {
-    gl_FragColor = vec4(vUv, 0.0, 1.0);
+    vec3 color = texture2D(uWebcamTexture, vUv).rgb;
+    gl_FragColor = vec4(color, 1.0);
 }

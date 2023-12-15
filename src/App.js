@@ -2,18 +2,24 @@ import * as THREE from 'three';
 import vertexShader from './shaders/custom.vert';
 import fragmentShader from './shaders/render.frag';
 
-function App (renderProps) {
+function App (renderProps, webcam) {
 
     const screenDimensions ={
         width: renderProps.canvas.width,
         height: renderProps.canvas.height
     };
 
+
     const scene = buildScene();
     const renderer = buildRender(screenDimensions);
     const camera = buildCamera(screenDimensions);
+
+    const webcamTexture = webcam.createTexture();
     const sceneObjects = createObjects(scene);
+
+
     const state = {
+
     };
 
     function buildScene() {
@@ -42,12 +48,22 @@ function App (renderProps) {
 
     function createObjects(scene) {
         var sceneObjects = [];
+        console.log(webcamTexture);
 
         // Create a full-width rectangle with a custom shader
         const geometry = new THREE.PlaneGeometry(2, 2);
         const material = new THREE.ShaderMaterial({
+            uniforms: {
+                uWebcamTexture: {type: "t", value: webcamTexture},
+                resolution: {
+				    type: "v2",
+				    value: new THREE.Vector2(window.innerWidth, window.innerHeight)
+			    },
+            },
             vertexShader,
             fragmentShader,
+
+
         });
 
         const rectangle = new THREE.Mesh(geometry, material);
