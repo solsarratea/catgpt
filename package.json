@@ -13,6 +13,7 @@
     "vite-plugin-glsl": "^1.2.1"
   },
   "dependencies": {
+    "interactjs": "^1.10.26",
     "three": "^0.159.0"
   }
 }

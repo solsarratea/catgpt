@@ -2,6 +2,7 @@ import * as THREE from 'three';
 
 import Simulation from './Simulation';
 import FullScreenQuad from './FullScreenQuad';
+import TextInput from './TextInput';
 
 function App (renderProps, webcam) {
 
@@ -24,6 +25,18 @@ function App (renderProps, webcam) {
 
     // Initialize buffer scene
     const simulation = new Simulation({ping, pong, webcamTexture});
+
+    const text = new TextInput(
+        {
+            bufferMaterial: simulation.material(),
+            renderMaterial: fullScreenQuad.material(),
+            charControls: {
+                char1: "a",
+                char2: "e",
+                char3: "s",
+                char4: ".",
+            }
+        });
 
     ///--------------------------------------------------------------------
 
@@ -79,7 +92,7 @@ function App (renderProps, webcam) {
 
     this.update = () => {
 
-        if (renderer.info.render.frame % 5 == 0) {
+        if (renderer.info.render.frame % 10 == 0) {
             renderer.setRenderTarget(ping);
             renderer.render(simulation.scene(), camera);
 

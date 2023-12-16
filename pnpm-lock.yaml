@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  interactjs:
+    specifier: ^1.10.26
+    version: 1.10.26
   three:
     specifier: ^0.159.0
     version: 0.159.0
@@ -217,6 +220,10 @@ packages:
     dev: true
     optional: true
 
+  /@interactjs/types@1.10.26:
+    resolution: {integrity: sha512-DekYpdkMV3XJVd/0k3f4pJluZAsCiG86yEtVXvGLK0lS/Fj0+OzYEv7HoMpcBZSkQ8s7//yaeEBgnxy2tV81lA==}
+    dev: false
+
   /@rollup/pluginutils@5.1.0:
     resolution: {integrity: sha512-XTIWOPPcpvyKI6L1NHo0lFlCyznUEyPmPY1mc3KpPVDYulHSTvyeLNVW00QTLIAFNhR3kYnJTQHeGqU4M3n09g==}
     engines: {node: '>=14.0.0'}
@@ -380,6 +387,12 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /interactjs@1.10.26:
+    resolution: {integrity: sha512-5gNTNDTfEHp2EifqtWGi5VkD3CMZVJSTGmtK/IsVRd+rkOk3E63iVs5Z+IeD5K1Lr0qZpU2754VHAwf5i+Z9xg==}
+    dependencies:
+      '@interactjs/types': 1.10.26
+    dev: false
 
   /nanoid@3.3.7:
     resolution: {integrity: sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==}

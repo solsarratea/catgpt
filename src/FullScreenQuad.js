@@ -28,6 +28,9 @@ function FullScreenQuad(scene){
         scene.add(geom);
     }
 
+    this.material = () => {
+        return material;
+    }
 
     this.update =({ping}) => {
         material.uniforms.uChannel0.value = ping.texture;

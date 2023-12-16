@@ -7,3 +7,32 @@ html, body {
     font-family: 'Courier New', Courier, monospace;
 
 }
+
+.editor {
+    position: absolute !important;
+    display: block;
+    resize: both;
+    background-color: black;
+    border: 2px solid #ccc;
+    padding:.5em;
+
+}
+.editor #textarea {
+    height: inherit;
+    width: inherit;
+    font-family: monospace;
+    font-size: 1.2em;
+    overflow: hidden;
+    margin: 0;
+    line-height: 1.5em;
+    white-space: pre-wrap;
+    resize: both;
+
+    border: none;
+    resize: none;
+    background: black;
+    z-index: 1;
+    color: white;
+    caret-color: red;
+    outline: none;
+}

@@ -47,6 +47,10 @@ function Simulation({webcamTexture, pong}){
         return scene;
     }
 
+    this.material = () => {
+        return material;
+    }
+
 
     this.update = ({pong})=>{
         material.uniforms.uFrame.value +=1;

@@ -53,9 +53,10 @@ void main() {
 
   vec3 render =vec3(newState);
 
-  render.gb = max(render.gb,bb.rr*0.9);
 
-  render = mix(ccc,render,step(1., neighbors)*(1.-uOffset3));
+
+  render = max(ccc,render);//,step(1., neighbors)*(1.-uOffset3));
+  render.gb = max(render.gb,bb.rr*0.9);
   render = mix(ccc,render,step(50., uFrame));
 
   gl_FragColor = vec4(render,1.);
