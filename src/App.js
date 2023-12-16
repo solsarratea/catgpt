@@ -1,6 +1,7 @@
 import * as THREE from 'three';
-import vertexShader from './shaders/custom.vert';
-import fragmentShader from './shaders/render.frag';
+
+import Simulation from './Simulation';
+import FullScreenQuad from './FullScreenQuad';
 
 function App (renderProps, webcam) {
 
@@ -9,26 +10,22 @@ function App (renderProps, webcam) {
         height: renderProps.canvas.height
     };
 
-
-    const scene = buildScene();
-    const renderer = buildRender(screenDimensions);
-    const camera = buildCamera(screenDimensions);
-
+    // Initialize webcam
     const webcamTexture = webcam.createTexture();
-    const sceneObjects = createObjects(scene);
 
+    // Initialize renderers
+    const renderer = buildRender(screenDimensions);
+    let  { ping, pong} = buildBufferRenders();
 
-    const state = {
+    // Initialize main scene
+    const scene = buildScene();
+    const camera = buildCamera(screenDimensions);
+    const fullScreenQuad =new FullScreenQuad(scene);
 
-    };
+    // Initialize buffer scene
+    const simulation = new Simulation({ping, pong, webcamTexture});
 
-    function buildScene() {
-        const scene = new THREE.Scene();
-        scene.background = new THREE.Color("#000000");
-
-        return scene;
-    };
-
+    ///--------------------------------------------------------------------
 
     function buildRender({ width, height }) {
         const renderer = new THREE.WebGLRenderer(renderProps);
@@ -42,50 +39,77 @@ function App (renderProps, webcam) {
     };
 
     function buildCamera({ width, height }) {
-      const camera = new THREE.Camera();
-      return camera;
+        const camera = new THREE.OrthographicCamera(- 1, 1, 1, - 1, 0, 1);
+        return camera;
     };
 
-    function createObjects(scene) {
-        var sceneObjects = [];
-        console.log(webcamTexture);
 
-        // Create a full-width rectangle with a custom shader
-        const geometry = new THREE.PlaneGeometry(2, 2);
-        const material = new THREE.ShaderMaterial({
-            uniforms: {
-                uWebcamTexture: {type: "t", value: webcamTexture},
-                resolution: {
-				    type: "v2",
-				    value: new THREE.Vector2(window.innerWidth, window.innerHeight)
-			    },
-            },
-            vertexShader,
-            fragmentShader,
+    function buildBufferRenders() {
+	     const renderTargetParams = {
+		    minFilter: THREE.NearestFilter,
+            magFilter: THREE.NearestFilter,
+            format: THREE.RGBAFormat,
+            type: THREE.FloatType,
+            stencilBuffer: false
+	    };
 
-
-        });
-
-        const rectangle = new THREE.Mesh(geometry, material);
-        scene.add(rectangle);
+	    let ping = new THREE.WebGLRenderTarget(
+		    window.innerWidth,
+		    window.innerHeight,
+		    renderTargetParams
+	    );
+	    let pong = new THREE.WebGLRenderTarget(
+		    window.innerWidth,
+		    window.innerHeight,
+		    renderTargetParams
+	    );
 
 
-        return sceneObjects;
+        return { ping, pong };
+    }
+
+
+    function buildScene() {
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color("#000000");
+
+        return scene;
     };
 
-    // Function to update the scene
+
     this.update = () => {
-        // Add your update logic here, if needed
-        for (let i = 0; i < sceneObjects.length; i++) {
-            // You can perform updates on each scene object if necessary
-            // sceneObjects[i].update(state);
-        }
 
+        if (renderer.info.render.frame % 5 == 0) {
+            renderer.setRenderTarget(ping);
+            renderer.render(simulation.scene(), camera);
+
+            fullScreenQuad.update({ping});
+
+            const temp = ping
+            ping = pong
+            pong = temp
+            simulation.update({pong});
+
+            renderer.setRenderTarget(null);
+
+        }
         renderer.render(scene, camera);
+
     };
+
 
     this.resize = () => {
+        // Update Renderer
         renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        // Update Camera
+        camera.aspect = window.innerWidth /  window.innerHeight
+        camera.updateProjectionMatrix()
+
+        //Update Objects
+        fullScreenQuad.resize();
+        simulation.resize();
 
     }
 

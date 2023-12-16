@@ -11,7 +11,7 @@ const webcam = new Webcam();
 
 await webcam.init();
 
-const app =   new App({canvas},webcam);
+const app =   new App({canvas,antialiased: false},webcam);
 
 function render() {
     requestAnimationFrame(render);
