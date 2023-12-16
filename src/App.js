@@ -105,7 +105,7 @@ function App (renderProps, webcam) {
 
         // Update Camera
         camera.aspect = window.innerWidth /  window.innerHeight
-        camera.updateProjectionMatrix()
+       // camera.updateProjectionMatrix()
 
         //Update Objects
         fullScreenQuad.resize();

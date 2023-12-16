@@ -14,12 +14,10 @@ uniform float uOffset3;
 
 
 void main() {
-  vec2 pixel = vUv;
-
   float pixelSize = 1.+floor(mix(0.,200.,uOffset2));
   vec2 pos =
-    vec2(floor(gl_FragCoord.x / pixelSize) * pixelSize + pixelSize / 2.0,
-         floor(gl_FragCoord.y / pixelSize) * pixelSize + pixelSize / 2.0);
+    vec2(floor(vUv.x*uResolution.x / pixelSize) * pixelSize + pixelSize / 2.0,
+         floor(vUv.y*uResolution.y / pixelSize) * pixelSize + pixelSize / 2.0);
 
 
   float threshold =(0.,1.,uOffset1);
