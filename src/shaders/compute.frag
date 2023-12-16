@@ -44,7 +44,7 @@ void main() {
   int ruleIndex = int(mix(neighbors, 8. + neighbors, 1.-status));
   float newState = float(uRule[ruleIndex]);
 
-  float l = threshold;
+  float l = 0.1;//threshold;
   vec3 webcamColor = texture2D(uWebcamTexture, pos / uResolution).rgb;
   vec3 bb = texture2D(uBackbuffer, pos / uResolution).rgb;
   vec3 ccc;
@@ -55,7 +55,7 @@ void main() {
 
 
 
-  render = max(ccc,render);//,step(1., neighbors)*(1.-uOffset3));
+  render = max(ccc,render);// ,step(1., neighbors)*(1.-uOffset3));
   render.gb = max(render.gb,bb.rr*0.9);
   render = mix(ccc,render,step(50., uFrame));
 

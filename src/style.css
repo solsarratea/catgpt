@@ -5,34 +5,63 @@ html, body {
     margin: 0;
     background: black;
     font-family: 'Courier New', Courier, monospace;
+    color: white;
 
 }
 
-.editor {
+.editor, controls {
     position: absolute !important;
     display: block;
-    resize: both;
     background-color: black;
     border: 2px solid #ccc;
     padding:.5em;
-
+    min-width: min-content;
+  
 }
+
 .editor #textarea {
     height: inherit;
     width: inherit;
-    font-family: monospace;
     font-size: 1.2em;
     overflow: hidden;
     margin: 0;
     line-height: 1.5em;
     white-space: pre-wrap;
     resize: both;
-
     border: none;
     resize: none;
     background: black;
-    z-index: 1;
+    z-index: 2;
     color: white;
-    caret-color: red;
+    caret-color: pink;
     outline: none;
+}
+
+
+
+input {
+    max-width: 1.2em;
+    font-size: 1.2em;
+    line-height: 1.5em;
+    background-color: black;
+    border: 2px solid #ccc;
+    color: white;
+    max-height:1.8em;
+}
+
+#editor{
+    /* transform: translate(20vw, 10vh); */
+    height: 300px;
+}
+
+#controls{
+    /* transform: translate(85vw, 20vh); */
+    height: min-content;
+    width: max-content;
+}
+
+#controls p{
+    margin-top:0.1em;
+
+
 }

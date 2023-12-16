@@ -3,6 +3,8 @@ import * as THREE from 'three';
 import Simulation from './Simulation';
 import FullScreenQuad from './FullScreenQuad';
 import TextInput from './TextInput';
+import CharControls from './CharControls';
+
 
 function App (renderProps, webcam) {
 
@@ -29,14 +31,12 @@ function App (renderProps, webcam) {
     const text = new TextInput(
         {
             bufferMaterial: simulation.material(),
-            renderMaterial: fullScreenQuad.material(),
-            charControls: {
-                char1: "a",
-                char2: "e",
-                char3: "s",
-                char4: ".",
-            }
+            renderMaterial: fullScreenQuad.material()
         });
+
+    const controls = new CharControls({
+        textInput: text
+    });
 
     ///--------------------------------------------------------------------
 

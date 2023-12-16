@@ -2,9 +2,15 @@ import interact from 'interactjs';
 
 function TextInput({
     bufferMaterial,
-    renderMaterial,
-    charControls
+    renderMaterial
 }){
+    let charControls = {
+        char1: "a",
+        char2: "e",
+        char3: "s",
+        char4: ".",
+    }
+
     const {editor, textarea} = initElements();
 
     function initElements() {
@@ -24,14 +30,10 @@ function TextInput({
 
         // Append the editorDiv to the element with id 'app'
         const appElement = document.getElementById('app');
-        appElement.innerHTML = ''; // Clear existing content
         appElement.appendChild(editorDiv);
 
-        return {editor: editorDiv , textarea};
-    }
 
-    document.addEventListener('DOMContentLoaded', function () {
-        interact('.editor').draggable({
+        interact('#editor').draggable({
             onmove: function (event) {
                 const target = event.target;
                 const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
@@ -54,7 +56,13 @@ function TextInput({
                 target.setAttribute('data-y', y);
             }
         });
-    });
+
+        return {editor: editorDiv , textarea};
+    }
+
+
+
+   
 
         const  updateCharCount = (txt, chr, v)=> {
         const count = (txt.split(chr) || []).length - 1;
@@ -66,6 +74,7 @@ function TextInput({
         const val = text.split("").reduce((i, s) => s.charCodeAt(0) + i, 0) % 9;
         const index = 2 * val + 1;
         const current  = bufferMaterial.uniforms.uRule.value[index];
+
 
         bufferMaterial.uniforms.uRule.value[index] = Number(!current);
 
@@ -101,6 +110,10 @@ function TextInput({
         onUpdate(textarea.value);
     });
 
+    this.updateChars = (newMap)=>{
+        charControls = newMap;
+
+    }
 
 
 }
