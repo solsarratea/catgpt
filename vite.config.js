@@ -5,4 +5,8 @@ export default {
     plugins: [
         ViteGlsl(),
     ],
+    build:{
+        target: "esnext" // or "es2019",
+
+    }
 };
