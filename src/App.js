@@ -2,8 +2,7 @@ import * as THREE from 'three';
 
 import Simulation from './Simulation';
 import FullScreenQuad from './FullScreenQuad';
-import TextInput from './TextInput';
-import CharControls from './CharControls';
+import UI from './UI';
 
 
 function App (renderProps, webcam) {
@@ -28,20 +27,15 @@ function App (renderProps, webcam) {
     // Initialize buffer scene
     const simulation = new Simulation({ping, pong, webcamTexture});
 
-    const text = new TextInput(
-        {
-            bufferMaterial: simulation.material(),
-            renderMaterial: fullScreenQuad.material()
-        });
-
-    const controls = new CharControls({
-        textInput: text
+    const ui = new UI( {
+        bufferMaterial: simulation.material(),
+        renderMaterial: fullScreenQuad.material()
     });
 
     ///--------------------------------------------------------------------
 
     function buildRender({ width, height }) {
-        const renderer = new THREE.WebGLRenderer(renderProps);
+        const renderer = new THREE.WebGLRenderer({...renderProps,antialias:true});
 
         const DPR = (window.devicePixelRatio) ? window.devicePixelRatio : 1;
         renderer.setPixelRatio(DPR);
@@ -58,7 +52,7 @@ function App (renderProps, webcam) {
 
 
     function buildBufferRenders() {
-	     const renderTargetParams = {
+	    const renderTargetParams = {
 		    minFilter: THREE.NearestFilter,
             magFilter: THREE.NearestFilter,
             format: THREE.RGBAFormat,
@@ -66,16 +60,17 @@ function App (renderProps, webcam) {
             stencilBuffer: false
 	    };
 
-	    let ping = new THREE.WebGLRenderTarget(
+	    const  ping = new THREE.WebGLRenderTarget(
 		    window.innerWidth,
 		    window.innerHeight,
 		    renderTargetParams
 	    );
-	    let pong = new THREE.WebGLRenderTarget(
+	    const  pong = new THREE.WebGLRenderTarget(
 		    window.innerWidth,
 		    window.innerHeight,
 		    renderTargetParams
 	    );
+
 
 
         return { ping, pong };
@@ -89,10 +84,24 @@ function App (renderProps, webcam) {
         return scene;
     };
 
+    function hasNonZeroValue(arrayBuffer) {
+
+        for (let i = 10; i < arrayBuffer.length; i++) {
+            if (arrayBuffer[i] !== 0 && arrayBuffer[i]!=1) {
+                console.log("ww",arrayBuffer[i],i,arrayBuffer.length);
+                return true; // Found a non-zero value
+
+            }
+        }
+        console.log(":c");
+        return false; // All values are 0
+    }
+
 
     this.update = () => {
 
         if (renderer.info.render.frame % 10 == 0) {
+
             renderer.setRenderTarget(ping);
             renderer.render(simulation.scene(), camera);
 
@@ -118,11 +127,12 @@ function App (renderProps, webcam) {
 
         // Update Camera
         camera.aspect = window.innerWidth /  window.innerHeight
-       // camera.updateProjectionMatrix()
+        // camera.updateProjectionMatrix()
 
         //Update Objects
         fullScreenQuad.resize();
         simulation.resize();
+        audio.resize();
 
     }
 

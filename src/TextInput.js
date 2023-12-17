@@ -62,9 +62,8 @@ function TextInput({
 
 
 
-   
 
-        const  updateCharCount = (txt, chr, v)=> {
+    const  updateCharCount = (txt, chr, v)=> {
         const count = (txt.split(chr) || []).length - 1;
         return (count % v) / (v - 1);
     }
@@ -75,6 +74,11 @@ function TextInput({
         const index = 2 * val + 1;
         const current  = bufferMaterial.uniforms.uRule.value[index];
 
+        const x = Math.floor(index / 9);
+        const y = index % 9;
+
+        let checkbox = document.getElementById(`checkbox_${x}_${y}`);
+        checkbox.checked = !current;
 
         bufferMaterial.uniforms.uRule.value[index] = Number(!current);
 
