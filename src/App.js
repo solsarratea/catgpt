@@ -132,7 +132,6 @@ function App (renderProps, webcam) {
         //Update Objects
         fullScreenQuad.resize();
         simulation.resize();
-        audio.resize();
 
     }
 

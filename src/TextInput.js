@@ -63,9 +63,10 @@ function TextInput({
 
 
 
-    const  updateCharCount = (txt, chr, v)=> {
+    const  updateCharCount = (txt, chr, v,prev)=> {
         const count = (txt.split(chr) || []).length - 1;
-        return (count % v) / (v - 1);
+
+        return (count > 0 ? (count % v) / (v - 1) : prev);
     }
 
     const onUpdate = (text)=>{
@@ -85,32 +86,35 @@ function TextInput({
         bufferMaterial.uniforms.uOffset1.value = updateCharCount(
             text,
             charControls.char1,
-            100
+            100,
+            bufferMaterial.uniforms.uOffset1.value
         );
 
         bufferMaterial.uniforms.uOffset2.value = updateCharCount(
             text,
             charControls.char2,
-            100
+            100,
+            bufferMaterial.uniforms.uOffset2.value
         );
 
         bufferMaterial.uniforms.uOffset3.value = updateCharCount(
             text,
             charControls.char3,
-            100
+            100,
+            bufferMaterial.uniforms.uOffset3.value
         );
 
         renderMaterial.uniforms.uOffset4.value = updateCharCount(
             text,
             charControls.char4,
-            100
+            100,
+            bufferMaterial.uniforms.uOffset4.value
         );
 
 
     }
 
     textarea.addEventListener('input', function () {
-
         onUpdate(textarea.value);
     });
 
