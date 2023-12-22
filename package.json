@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "interactjs": "^1.10.26",
+    "node-fetch": "^3.3.2",
     "three": "^0.159.0"
   }
 }

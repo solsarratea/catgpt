@@ -1,2 +1,7 @@
+[[build]]
+  command = "pnpm run build"  # Adjust based on your build command
+
+
 [[build.plugins]]
   package = "@netlify/plugin-functions-install-core"
+
