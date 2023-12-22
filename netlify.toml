@@ -1,5 +1,7 @@
 [[headers]]
   for = "/*"
-    [headers.values]
-      Access-Control-Allow-Origin = ["https://catgpt.solsarratea.world"]
-      Access-Control-Allow-Methods = ["GET"]
+  [headers.values]
+    Cross-Origin-Opener-Policy =  "same-origin"
+    Cross-Origin-Embedder-Policy= "require-corp"
+
+
