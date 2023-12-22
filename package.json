@@ -13,6 +13,7 @@
     "vite-plugin-glsl": "^1.2.1"
   },
   "dependencies": {
+    "data-uri-to-buffer": "^6.0.1",
     "interactjs": "^1.10.26",
     "node-fetch": "^3.3.2",
     "three": "^0.159.0"
