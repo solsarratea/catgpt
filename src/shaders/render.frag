@@ -1,7 +1,9 @@
 varying vec2 vUv;
 uniform sampler2D uChannel0;
+uniform sampler2D uChannel1;
 uniform float uTime;
 uniform float uOffset4;
+uniform bool uShowcat;
 
 vec3 hueShift( vec3 color, float hueAdjust ){
   const vec3  kRGBToYPrime = vec3 (0.299, 0.587, 0.114);
@@ -26,9 +28,17 @@ float luma(vec3 color) {
   return dot(color, vec3(0.299, 0.587, 0.114));
 }
 
+
 void main() {
   vec3 color;
-  color += texture2D(uChannel0, vUv+vec2(0.001,0.)).rgb;
+  color = texture2D(uChannel0, vUv+vec2(0.001,0.)).rgb;
+
+  if(uShowcat){
+    vec3 cat = texture2D(uChannel0, vUv).rgb;
+    color= max(color,cat);
+  }
+ 
+
   color.g -= 0.2*texture2D(uChannel0, vUv+vec2(-0.005,0.)).b;
   color = hueShift(color, mix(0.,3.,uOffset4));
 

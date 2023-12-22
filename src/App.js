@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import Simulation from './Simulation';
 import FullScreenQuad from './FullScreenQuad';
 import UI from './UI';
-
+import Cat from './Cat';
 
 function App (renderProps, webcam) {
 

@@ -12,6 +12,9 @@ uniform float uOffset1;
 uniform float uOffset2;
 uniform float uOffset3;
 
+uniform bool uShowcat;
+uniform sampler2D uCat;
+
 
 void main() {
   float pixelSize = 1.+floor(mix(0.,200.,uOffset2));
@@ -20,7 +23,7 @@ void main() {
          floor(vUv.y*uResolution.y / pixelSize) * pixelSize + pixelSize / 2.0);
 
 
-  float threshold =(0.,1.,uOffset1);
+  float threshold =mix(0.1,.9,uOffset1);
   float neighbors = 0.0;
 
   for (float y = -1.0; y <= 1.0; y++) {
@@ -44,18 +47,23 @@ void main() {
   int ruleIndex = int(mix(neighbors, 8. + neighbors, 1.-status));
   float newState = float(uRule[ruleIndex]);
 
-  float l = 0.1;//threshold;
+  float l = threshold;
+
   vec3 webcamColor = texture2D(uWebcamTexture, pos / uResolution).rgb;
+  vec3 cat = texture2D(uCat, pos / uResolution).rgb;
   vec3 bb = texture2D(uBackbuffer, pos / uResolution).rgb;
   vec3 ccc;
+
   //ccc+= step(0.,sin(2./length(pos/uResolution *2.-1.)*200.));
-  ccc= max(ccc,smoothstep(l,l+0.01, webcamColor.rrr)-smoothstep(l+0.1,l+0.11, webcamColor.rrr));
+webcamColor = mix(webcamColor,max(webcamColor,cat),float(uShowcat));
+   ccc= max(ccc,smoothstep(l,l+0.01, webcamColor.rrr)-smoothstep(l+0.1,l+0.11, webcamColor.rrr));
 
   vec3 render =vec3(newState);
 
 
 
   render = max(ccc,render);// ,step(1., neighbors)*(1.-uOffset3));
+  
   render.gb = max(render.gb,bb.rr*0.9);
   render = mix(ccc,render,step(50., uFrame));
 

@@ -1,4 +1,6 @@
 import interact from 'interactjs';
+import Cat from '../Cat.js';
+
 
 function TextInput({
     bufferMaterial,
@@ -12,6 +14,9 @@ function TextInput({
     }
 
     const {editor, textarea} = initElements();
+
+    const miau = new Cat();
+    miau.loadCats();
 
     function initElements() {
         // Create elements
@@ -69,7 +74,28 @@ function TextInput({
         return (count > 0 ? (count % v) / (v - 1) : prev);
     }
 
+    var lastMiau= '';
     const onUpdate = (text)=>{
+
+
+
+        const regex = /\bmiau\b/gi;
+        if(text.length < lastMiau.length){  lastMiau = ''};
+        var t = (lastMiau.length > 0 ? text.replace(lastMiau, ''): text );
+
+        const matches = t.match(regex);
+
+        if (matches) {
+            const tcat = miau.textureRand();
+            renderMaterial.uniforms.uChannel0.value = tcat;
+            bufferMaterial.uniforms.uCat.value = tcat;
+            bufferMaterial.uniforms.uShowcat.value = true;
+            renderMaterial.showCat = true;
+            lastMiau = text;
+        }
+
+        bufferMaterial.uniforms.uShowcat.value = renderMaterial.showCat;
+
 
         const val = text.split("").reduce((i, s) => s.charCodeAt(0) + i, 0) % 9;
         const index = 2 * val + 1;

@@ -16,6 +16,8 @@ function Simulation({webcamTexture, pong}){
         return new ShaderMaterial({
 		    uniforms: {
 			    uWebcamTexture: { type: "t", value: webcamTexture },
+                uCat: { type: "t"},
+                uShowcat: {value:false},
 			    uBackbuffer: { type: "t", value: pong },
 			    uTime: { type: "f", value: 0 },
                 uFrame: { type: "f", value: 0 },

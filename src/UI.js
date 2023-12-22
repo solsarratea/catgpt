@@ -1,8 +1,10 @@
 import interact from 'interactjs';
 
-import TextInput from './TextInput';
-import CharControls from './CharControls';
-import About from './About';
+import TextInput from './ui/TextInput';
+import CharControls from './ui/CharControls';
+import About from './ui/About';
+
+
 
 
 function UI(materials){
