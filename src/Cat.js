@@ -45,7 +45,8 @@ class Cat {
         const index = Math.floor(Math.random() * this.cats.length);
         const imageUrl = this.cats[index].url;
 
-        this.texture = this.textureLoader.load(imageUrl);
+        const proxyUrl = `/proxy-image?url=${encodeURIComponent(imageUrl)}`;
+        this.texture = this.textureLoader.load(proxyUrl);
 
         return this.texture;
 
