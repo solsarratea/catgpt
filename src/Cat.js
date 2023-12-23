@@ -5,6 +5,7 @@ class Cat {
         this.texture = new Texture(); // Initialize with an empty texture
         this.cats = [];
         this.textureLoader = new TextureLoader();
+        this.textureLoader.crossOrigin = 'anonymous';
     }
 
 
@@ -18,22 +19,58 @@ class Cat {
     }
 
     async loadCats2() {
-        const numberOfCats = 50;
-        const catApiUrl = `https://api.thecatapi.com/v1/images/search?limit=${numberOfCats}`;
 
-        try {
-            const response = await fetch(catApiUrl);
-            if (!response.ok) {
-                throw new Error(`Request failed with status: ${response.status}`);
-            }
+        const headers = new Headers({
+            "Content-Type": "application/json",
+            "x-api-key":'live_60gLecnRnRq1Z507j055wIup8lKcj1gTrixg8tCbS1JoqnXmo315o4sPeJNn3Kkw'
+        });
 
-            const catData = await response.json();
-            this.cats = catData;
-        } catch (error) {
-            console.error('Error loading cats:', error);
+        var requestOptions = {
+            method: 'GET',
+            headers: headers,
+        };
+
+        const headers2 = new Headers({
+            "x-api-key":'live_60gLecnRnRq1Z507j055wIup8lKcj1gTrixg8tCbS1JoqnXmo315o4sPeJNn3Kkw'
+        });
+
+       fetch("https://api.thecatapi.com/v1/images/search?mime_types=jpg&limit=20", requestOptions)
+      //  fetch("/.netlify/functions/proxy-image?url=" + encodeURIComponent("https://api.thecatapi.com/v1/images/search?mime_types=jpg&limit=20"), requestOptions)
+
+            .then(response => response.json())
+            .then(async result => {
+                // Define a function to fetch and process each image
+                const fetchAndProcessImage = async (cat, index) => {
+                    
+                     const imageUrl = `.netlify/functions/image-proxy?url=${encodeURIComponent(cat.url)}`;
+                    const imageResponse = await fetch(imageUrl, { headers: headers2 });
+
+                    if (!imageResponse.ok) {
+                        console.error(`Error fetching image at index ${index}`);
+                        return;
+                    }
+
+                    console.log("response:",imageResponse)
+                    const imageBlob = await imageResponse.blob();
+
+
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        cat.base64 = reader.result; // Save base64 data in the result array
+                        if (index === result.length - 1) {
+                            // All images fetched and saved, you can proceed with your logic here
+                            this.cats = result;
+                            console.log("this cats:", this.cats);
+                        }
+                    };
+                    reader.readAsDataURL(new Blob([imageBlob], { type: 'image/jpeg' }));
+                }
+
+                // Use Promise.all to parallelize fetching and processing of images
+                await Promise.all(result.map((cat, index) => fetchAndProcessImage(cat, index)));
+            })
+            .catch(error => console.log('error', error));
         }
-    }
-
 
     async loadCats() {
         await this.loadCats1();
@@ -41,15 +78,14 @@ class Cat {
     }
 
 
-    textureRand (){
+    textureRand() {
         const index = Math.floor(Math.random() * this.cats.length);
-        const imageUrl = this.cats[index].url;
+        const base64Data = this.cats[index].base64;
 
-        const proxyUrl = `/proxy-image?url=${encodeURIComponent(imageUrl)}`;
-        this.texture = this.textureLoader.load(proxyUrl);
+        console.log(base64Data);
+        this.texture = this.textureLoader.load(base64Data);
 
         return this.texture;
-
     }
 
 }

@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+      "dev": "NODE_TLS_REJECT_UNAUTHORIZED=0 vite && cp _headers dest/_headers",
+    "build": "vite build && cp _headers dist/_headers",
     "preview": "vite preview"
   },
   "devDependencies": {

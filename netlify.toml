@@ -1,3 +1,9 @@
-[[build.plugins]]
-  package = "@netlify/plugin-functions-install-core"
+[build]
+  command = "pnpm run build"
+  functions = "functions"
+  publish = "dist"
+
+[functions]
+  [functions.proxy-image]
+    script = "functions/proxy-image/proxy-image.js"
 
