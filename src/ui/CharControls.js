@@ -43,6 +43,14 @@ function CharControls({
         title.innerText = "char controls";
         controlDiv.appendChild(title);
 
+
+        const initialX= window.innerWidth/1.1;
+        const initialY= window.innerHeight/30;
+
+        controlDiv.style.transform = `translate(${initialX}px, ${initialY}px)`;
+        controlDiv.setAttribute('data-x', initialX);
+        controlDiv.setAttribute('data-y', initialY);
+
         const input1 = createInput('char1', charControls.char1, controlDiv);
         const input2 = createInput('char2', charControls.char2, controlDiv);
         const input3 = createInput('char3', charControls.char3, controlDiv);

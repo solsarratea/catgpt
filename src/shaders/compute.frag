@@ -15,6 +15,7 @@ uniform float uOffset3;
 uniform bool uShowcat;
 uniform sampler2D uCat;
 
+float luma(vec3 color) { return dot(color, vec3(0.299, 0.587, 0.114)); }
 
 void main() {
   float pixelSize = 1.+floor(mix(0.,200.,uOffset2));
@@ -52,20 +53,20 @@ void main() {
   vec3 webcamColor = texture2D(uWebcamTexture, pos / uResolution).rgb;
   vec3 cat = texture2D(uCat, pos / uResolution).rgb;
   vec3 bb = texture2D(uBackbuffer, pos / uResolution).rgb;
-  vec3 ccc;
 
-  //ccc+= step(0.,sin(2./length(pos/uResolution *2.-1.)*200.));
-webcamColor = mix(webcamColor,max(webcamColor,cat),float(uShowcat));
-   ccc= max(ccc,smoothstep(l,l+0.01, webcamColor.rrr)-smoothstep(l+0.1,l+0.11, webcamColor.rrr));
+  webcamColor = mix(webcamColor,max(webcamColor,cat),float(uShowcat));
+
+  vec3 source = mix(webcamColor,cat,float(uShowcat));
+  vec3 wl = vec3(luma(source));
+
+  source = smoothstep(l,l+0.01,wl)-smoothstep(l+0.1,l+0.11,wl) ;
 
   vec3 render =vec3(newState);
 
-
-
-  render = max(ccc,render);// ,step(1., neighbors)*(1.-uOffset3));
+  render = max(source,render);// ,step(1., neighbors)*(1.-uOffset3));
   
   render.gb = max(render.gb,bb.rr*0.9);
-  render = mix(ccc,render,step(50., uFrame));
+  render = mix(source,render,step(50., uFrame));
 
   gl_FragColor = vec4(render,1.);
 

@@ -40,6 +40,15 @@ html, body {
     height: 100%;
 }
 
+.editor #title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.editor #title p {
+    width: min-content;
+}
+
 
 
 input {

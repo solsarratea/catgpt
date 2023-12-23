@@ -16,7 +16,7 @@ function UI(materials){
 
     const about = new About();
 
-    //  const screenShot = createScreenshot();
+    //const screenShot = createScreenshot();
 
     const rules = createRuleTable();
 
@@ -59,9 +59,32 @@ function UI(materials){
         div.className = 'editor';
         div.id = 'rules';
 
+        const titlecont = document.createElement('div');
+        titlecont.id = "title";
+        div.appendChild(titlecont);
+
         const title = document.createElement('p');
-        title.innerText = "current rule";
-        div.appendChild(title);
+        titlecont.innerText = "current rule";
+        titlecont.appendChild(title);
+
+        const but = document.createElement('button');
+        but.innerText = (materials.bufferMaterial.updateRule ? "◼" :"◻");
+
+        but.addEventListener('click', function() {
+            const val = materials.bufferMaterial.updateRule;
+            materials.bufferMaterial.updateRule=!val;
+            but.innerText =  (materials.bufferMaterial.updateRule ? "◼" :"◻");
+
+        });
+
+        titlecont.appendChild(but);
+
+        const initialX= window.innerWidth/1.16;
+        const initialY= window.innerHeight/6;
+
+        div.style.transform = `translate(${initialX}px, ${initialY}px)`;
+        div.setAttribute('data-x', initialX);
+        div.setAttribute('data-y', initialY);
 
         const numRows = 2;
         const numCols = 9;
@@ -80,9 +103,7 @@ function UI(materials){
 
                 checkbox.addEventListener('change', ()=>{
                     const index = i*(8+i)+(j);
-                    console.log(checkbox.checked);
                     materials.bufferMaterial.uniforms.uRule.value[index] = Number(checkbox.checked);
-
 
                 });
 

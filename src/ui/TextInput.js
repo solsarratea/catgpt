@@ -24,6 +24,13 @@ function TextInput({
         editorDiv.className = 'editor';
         editorDiv.id = 'editor';
 
+        const initialX= window.innerWidth/20;
+        const initialY= window.innerHeight/7;
+
+        editorDiv.style.transform = `translate(${initialX}px, ${initialY}px)`;
+        editorDiv.setAttribute('data-x', initialX);
+        editorDiv.setAttribute('data-y', initialY);
+
         const textarea = document.createElement('textarea');
         textarea.id = 'textarea';
         textarea.spellcheck = false;
@@ -43,7 +50,6 @@ function TextInput({
                 const target = event.target;
                 const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
                 const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-
                 target.style.transform = `translate(${x}px, ${y}px)`;
                 target.setAttribute('data-x', x);
                 target.setAttribute('data-y', y);
@@ -69,6 +75,7 @@ function TextInput({
 
 
     const  updateCharCount = (txt, chr, v,prev)=> {
+        if(chr=='') return prev;
         const count = (txt.split(chr) || []).length - 1;
 
         return (count > 0 ? (count % v) / (v - 1) : prev);
@@ -76,8 +83,6 @@ function TextInput({
 
     var lastMiau= '';
     const onUpdate = (text)=>{
-
-
 
         const regex = /\bmiau\b/gi;
         if(text.length < lastMiau.length){  lastMiau = ''};
@@ -96,19 +101,19 @@ function TextInput({
 
         bufferMaterial.uniforms.uShowcat.value = renderMaterial.showCat;
 
+        if(bufferMaterial.updateRule){
+            const val = text.split("").reduce((i, s) => s.charCodeAt(0) + i, 0) % 9;
+            const index = 2 * val + 1;
+            const current  = bufferMaterial.uniforms.uRule.value[index];
 
-        const val = text.split("").reduce((i, s) => s.charCodeAt(0) + i, 0) % 9;
-        const index = 2 * val + 1;
-        const current  = bufferMaterial.uniforms.uRule.value[index];
+            const x = Math.floor(index / 9);
+            const y = index % 9;
 
-        const x = Math.floor(index / 9);
-        const y = index % 9;
+            let checkbox = document.getElementById(`checkbox_${x}_${y}`);
+            checkbox.checked = !current;
 
-        let checkbox = document.getElementById(`checkbox_${x}_${y}`);
-        checkbox.checked = !current;
-
-        bufferMaterial.uniforms.uRule.value[index] = Number(!current);
-
+            bufferMaterial.uniforms.uRule.value[index] = Number(!current);
+        }
         bufferMaterial.uniforms.uOffset1.value = updateCharCount(
             text,
             charControls.char1,

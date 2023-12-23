@@ -9,6 +9,7 @@ function Simulation({webcamTexture, pong}){
 
     const scene = new Scene();
     const material = createMaterial();
+    material.updateRule=true;
     const object = createObject();
 
 
