@@ -35,7 +35,9 @@ function App (renderProps, webcam) {
     ///--------------------------------------------------------------------
 
     function buildRender({ width, height }) {
-        const renderer = new THREE.WebGLRenderer({...renderProps,antialias:true});
+        const renderer = new THREE.WebGLRenderer({...renderProps,
+                                                  preserveDrawingBuffer:true,
+                                                  antialias:true});
 
         const DPR = (window.devicePixelRatio) ? window.devicePixelRatio : 1;
         renderer.setPixelRatio(DPR);

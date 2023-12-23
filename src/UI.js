@@ -3,33 +3,47 @@ import interact from 'interactjs';
 import TextInput from './ui/TextInput';
 import CharControls from './ui/CharControls';
 import About from './ui/About';
-
-
-
+import saveAs from './libs/fileSaver';
 
 function UI(materials){
     const text = new TextInput(materials);
-
     const controls = new CharControls({
         textInput: text
     });
 
     const about = new About();
-
-    //const screenShot = createScreenshot();
-
+    const screenShot = createScreenshot();
     const rules = createRuleTable();
+
 
     function createScreenshot(){
         const div = document.createElement('div');
         div.className = 'editor';
         div.id = 'sshot';
+        const initialX= 50;
+        const initialY=0;
+        div.style.transform = `translate(${initialX}px, ${initialY}px)`;
+        div.setAttribute('data-x', initialX);
+        div.setAttribute('data-y', initialY);
 
         const but = document.createElement('button');
         but.innerText = "📸";
         div.appendChild(but);
 
-        but.addEventListener('click', function() {
+
+        but.addEventListener('click', function(event) {
+
+            var aCanvas = document.getElementsByTagName('canvas')[0],
+                ctx =  aCanvas.getContext("webgl2", {preserveDrawingBuffer: true});
+
+            aCanvas.toBlob( function(blob)
+                            {
+                                var d = new Date();
+                                var fName = d.getFullYear()+"_"+d.getMonth()+"_"+d.getDate()+"_"+
+                                    d.getHours()+"_"+d.getMinutes()+"_"+d.getSeconds();
+
+                                saveAs(blob, "catgtp-" + fName +".png");
+                            });
 
         });
 
