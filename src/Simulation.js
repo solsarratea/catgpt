@@ -7,12 +7,13 @@ function Simulation({webcamTexture, pong}){
     let rule = [0, 0, 1, 1, 0, 0, 0, 0, 0,
                 0, 0, 1, 0, 0, 0, 0, 0, 0];
 
-    let offsets = [0.15,0.05 ,0. ,0. ,
-                   0.  ,0.   ,0. ,0. ,0.  ];
+    const initOffsets = [0.15,0.05 ,0. ,0. ,
+                         0.  ,0.   ,0. ,0. ,0.  ];
 
     const scene = new Scene();
     const material = createMaterial();
     material.updateRule=true;
+    material.offsets = initOffsets;
     const object = createObject();
 
 
@@ -31,7 +32,7 @@ function Simulation({webcamTexture, pong}){
 			    },
                 uRule: { type: "iv",
                          value: rule },
-                uOffset : { type: "iv", value: offsets },
+                uOffset : { type: "iv", value: initOffsets },
 
 		    },
 		    vertexShader: vertexShader,

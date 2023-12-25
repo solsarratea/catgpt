@@ -4,23 +4,16 @@ import Cat from '../Cat.js';
 
 function TextInput({
     bufferMaterial,
-    renderMaterial
+    renderMaterial,
+    charControls
 }){
-    let charControls = {
-        char0: "a",
-        char1: "e",
-        char2: "s",
-        char3: ".",
-        char4: "!",
-    }
-
-    let offsets = [0.15,0.05 ,0. ,0. ,
-                   0.  ,0.   ,0. ,0. ,0.  ];
 
     const {editor, textarea} = initElements();
 
     const miau = new Cat();
     miau.loadCats();
+
+    let offsets= [...bufferMaterial.offsets];
 
     function initElements() {
         // Create elements
@@ -79,24 +72,23 @@ function TextInput({
 
 
     const  updateCharCount = (txt, i, v)=> {
-        const chr =  charControls[`char${i}`];
+        const chr =  charControls.getMap()[`char${i}`];
         const prev =  bufferMaterial.uniforms.uOffset.value[i];
 
         if(chr == '') return prev;
+        const count = Math.max(0,(txt.split(chr) || []).length-1);
 
-        const count = (txt.split(chr) || []).length;
         if(count > 1 && prev > offsets[i]){ offsets[i] = 0;}
 
-        const ret = offsets[i]+(count % v) / (v - 1);
-
-        return ret;
+        const ret = (count % v) / (v - 1);
+        return offsets[i]+ret;
     };
 
 
     var lastMiau= '';
     const onUpdate = (text)=>{
-
-        const regex = /\bmiau\b/gi;
+        console.log("update: ", text);
+        const regex = /\bmeow\b/gi;
         if(text.length < lastMiau.length){  lastMiau = '';}
         var t = (lastMiau.length > 0 ? text.replace(lastMiau, ''): text );
 
@@ -128,26 +120,25 @@ function TextInput({
         }
 
         for(let i=0; i < 8; i ++){
-         
-            bufferMaterial.uniforms.uOffset.value[i] = updateCharCount(
+            const value = updateCharCount(
                 text,
                 i,
                 100
             );
 
-            renderMaterial.uniforms.uOffset.value[i] =  bufferMaterial.uniforms.uOffset.value[i];
+            bufferMaterial.uniforms.uOffset.value[i] = value;
+
+            renderMaterial.uniforms.uOffset.value[i] = value;
+
         }
+
+
 
     };
 
     textarea.addEventListener('input', function () {
         onUpdate(textarea.value);
     });
-
-    this.updateChars = (newMap)=>{
-        charControls = newMap;
-
-    };
 
 
 }

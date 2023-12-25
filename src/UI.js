@@ -6,10 +6,9 @@ import About from './ui/About';
 import saveAs from './libs/fileSaver';
 
 function UI(materials){
-    const text = new TextInput(materials);
-    const controls = new CharControls({
-        textInput: text
-    });
+    const controls = new CharControls();
+    const text = new TextInput({...materials, charControls: controls });
+
 
     const about = new About();
     const screenShot = createScreenshot();

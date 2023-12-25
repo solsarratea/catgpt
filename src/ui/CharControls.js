@@ -1,15 +1,17 @@
 import interact from 'interactjs';
 
-function CharControls({
-    textInput
-}) {
+function CharControls() {
 
     let charControls = {
-        char0: "!",
-        char1: "a",
-        char2: "e",
-        char3: "s",
-        char4: ".",
+        char0: "a",
+        char1: "e",
+        char2: "1",
+        char3: "2",
+        char4: "3",
+        char5: "4",
+        char6: "5",
+        char7: "6",
+        char8: "7",
     }
 
 
@@ -28,7 +30,6 @@ function CharControls({
             console.log(`Input value changed to: ${newValue} for ${id}`);
 
             charControls[id] = newValue;
-            textInput.updateChars(charControls);
         });
 
         parent.appendChild(input);
@@ -45,18 +46,22 @@ function CharControls({
         controlDiv.appendChild(title);
 
 
-        const initialX= window.innerWidth/1.1;
-        const initialY= window.innerHeight/30;
+        const initialX= window.innerWidth -300;
+        const initialY= 30;
 
         controlDiv.style.transform = `translate(${initialX}px, ${initialY}px)`;
         controlDiv.setAttribute('data-x', initialX);
         controlDiv.setAttribute('data-y', initialY);
 
+        const input0 = createInput('char0', charControls.char0, controlDiv);
         const input1 = createInput('char1', charControls.char1, controlDiv);
         const input2 = createInput('char2', charControls.char2, controlDiv);
         const input3 = createInput('char3', charControls.char3, controlDiv);
-        const input4 = createInput('char4', charControls.char4, controlDiv);
 
+        const input4 = createInput('char4', charControls.char4, controlDiv);
+        const input5 = createInput('char5', charControls.char5, controlDiv);
+        const input6 = createInput('char6', charControls.char6, controlDiv);
+        const input7 = createInput('char7', charControls.char7, controlDiv);
 
 
         const appElement = document.getElementById('app');
@@ -78,6 +83,9 @@ function CharControls({
         return controlDiv;
     }
 
+    this.getMap = ()=>{
+        return charControls;
+    }
 
 
     

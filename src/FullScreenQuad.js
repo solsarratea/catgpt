@@ -20,7 +20,11 @@ function FullScreenQuad(scene){
                 uChannel0: { type: "t"},
                 uTime: { type:"f", value:0},
                 uOffset : { type: "iv", value: offsets },
-                uShowcat: {value: false}
+                uShowcat: {value: false},
+                uResolution: {
+				    type: "v2",
+				    value: new Vector2(window.innerWidth, window.innerHeight)
+			    },
             },
             depthTest: false,
             blending: AdditiveBlending

@@ -60,7 +60,7 @@ void main() {
   render = max(source,render);
   
   render.gb = max(render.gb,bb.rr*0.95);
-  render = mix(source,render,step(50., uFrame));
+  render = mix(source,render,step(20., uFrame));
 
   gl_FragColor = vec4(render,1.);
 
