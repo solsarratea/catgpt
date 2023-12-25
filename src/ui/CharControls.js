@@ -5,6 +5,7 @@ function CharControls({
 }) {
 
     let charControls = {
+        char0: "!",
         char1: "a",
         char2: "e",
         char3: "s",

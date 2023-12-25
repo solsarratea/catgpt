@@ -7,11 +7,15 @@ function TextInput({
     renderMaterial
 }){
     let charControls = {
-        char1: "a",
-        char2: "e",
-        char3: "s",
-        char4: ".",
+        char0: "a",
+        char1: "e",
+        char2: "s",
+        char3: ".",
+        char4: "!",
     }
+
+    let offsets = [0.15,0.05 ,0. ,0. ,
+                   0.  ,0.   ,0. ,0. ,0.  ];
 
     const {editor, textarea} = initElements();
 
@@ -74,18 +78,26 @@ function TextInput({
 
 
 
-    const  updateCharCount = (txt, chr, v,prev)=> {
-        if(chr=='') return prev;
-        const count = (txt.split(chr) || []).length - 1;
+    const  updateCharCount = (txt, i, v)=> {
+        const chr =  charControls[`char${i}`];
+        const prev =  bufferMaterial.uniforms.uOffset.value[i];
 
-        return (count > 0 ? (count % v) / (v - 1) : prev);
-    }
+        if(chr == '') return prev;
+
+        const count = (txt.split(chr) || []).length;
+        if(count > 1 && prev > offsets[i]){ offsets[i] = 0;}
+
+        const ret = offsets[i]+(count % v) / (v - 1);
+
+        return ret;
+    };
+
 
     var lastMiau= '';
     const onUpdate = (text)=>{
 
         const regex = /\bmiau\b/gi;
-        if(text.length < lastMiau.length){  lastMiau = ''};
+        if(text.length < lastMiau.length){  lastMiau = '';}
         var t = (lastMiau.length > 0 ? text.replace(lastMiau, ''): text );
 
         const matches = t.match(regex);
@@ -114,36 +126,19 @@ function TextInput({
 
             bufferMaterial.uniforms.uRule.value[index] = Number(!current);
         }
-        bufferMaterial.uniforms.uOffset1.value = updateCharCount(
-            text,
-            charControls.char1,
-            100,
-            bufferMaterial.uniforms.uOffset1.value
-        );
 
-        bufferMaterial.uniforms.uOffset2.value = updateCharCount(
-            text,
-            charControls.char2,
-            100,
-            bufferMaterial.uniforms.uOffset2.value
-        );
+        for(let i=0; i < 8; i ++){
+         
+            bufferMaterial.uniforms.uOffset.value[i] = updateCharCount(
+                text,
+                i,
+                100
+            );
 
-        bufferMaterial.uniforms.uOffset3.value = updateCharCount(
-            text,
-            charControls.char3,
-            100,
-            bufferMaterial.uniforms.uOffset3.value
-        );
+            renderMaterial.uniforms.uOffset.value[i] =  bufferMaterial.uniforms.uOffset.value[i];
+        }
 
-        renderMaterial.uniforms.uOffset4.value = updateCharCount(
-            text,
-            charControls.char4,
-            100,
-            bufferMaterial.uniforms.uOffset4.value
-        );
-
-
-    }
+    };
 
     textarea.addEventListener('input', function () {
         onUpdate(textarea.value);
@@ -152,7 +147,7 @@ function TextInput({
     this.updateChars = (newMap)=>{
         charControls = newMap;
 
-    }
+    };
 
 
 }

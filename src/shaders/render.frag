@@ -2,8 +2,8 @@ varying vec2 vUv;
 uniform sampler2D uChannel0;
 uniform sampler2D uChannel1;
 uniform float uTime;
-uniform float uOffset4;
-uniform bool uShowcat;
+uniform float uOffset[8];
+
 
 vec3 hueShift( vec3 color, float hueAdjust ){
   const vec3  kRGBToYPrime = vec3 (0.299, 0.587, 0.114);
@@ -32,15 +32,22 @@ float luma(vec3 color) {
 void main() {
   vec3 color;
   color = texture2D(uChannel0, vUv+vec2(0.001,0.)).rgb;
-
-  if(uShowcat){
-    vec3 cat = texture2D(uChannel0, vUv).rgb;
-    color= max(color,cat);
-  }
+  color.g -= 0.2*texture2D(uChannel0, vUv+vec2(-0.005,0.)).b;
  
 
-  color.g -= 0.2*texture2D(uChannel0, vUv+vec2(-0.005,0.)).b;
-  color = hueShift(color, mix(0.,3.,uOffset4));
+  // Input colour
+  // vec3 newcolor = vec3(1.0, 0.8, 1.0);
+
+
+  //  color.r = color.r * 0.3 + color.g * 0.7 + color.b * 0.1;
+
+  //   vec3 power = (color.r+color.g+color.b)*0.3333-color;
+
+
+ color = hueShift(color, mix(0.,3.,uOffset[3]));
+
+
+
 
   gl_FragColor = vec4(color, 1.0);
 }

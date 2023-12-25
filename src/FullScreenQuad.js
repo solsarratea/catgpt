@@ -3,11 +3,15 @@ import renderFragmentShader from './shaders/render.frag';
 import  {Mesh, PlaneGeometry, Scene, ShaderMaterial,Vector2,AdditiveBlending } from 'three';
 
 function FullScreenQuad(scene){
+    let offsets = [0.15,0.05 ,0. ,0. ,
+                   0.  ,0.   ,0. ,0. ,0.  ];
+
     const material = createMaterial();
     const object = createObject(scene);
     const MAX = 5;
     var showCat = 0;
-    function createMaterial(){
+
+  function createMaterial(){
         const material = new ShaderMaterial({
             vertexShader: vertexShader,
             fragmentShader: renderFragmentShader,
@@ -15,7 +19,7 @@ function FullScreenQuad(scene){
                 uResolution: { value: new Vector2(window.innerWidth, window.innerHeight) },
                 uChannel0: { type: "t"},
                 uTime: { type:"f", value:0},
-                uOffset4: {type: "f", value:0},
+                uOffset : { type: "iv", value: offsets },
                 uShowcat: {value: false}
             },
             depthTest: false,
