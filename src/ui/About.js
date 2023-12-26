@@ -1,6 +1,6 @@
 import interact from 'interactjs';
 
-function About(){
+function About(controls){
 
     const modal = initModal();
     const button = initButton();
@@ -16,6 +16,16 @@ function About(){
         div.appendChild(but);
 
         but.addEventListener('click', function() {
+            document.getElementById('infochar0').innerText = controls.getChar('char0');
+            document.getElementById('infochar1').innerText = controls.getChar('char1');
+            document.getElementById('examplechar1').innerText = controls.getChar('char1');
+            document.getElementById('infochar2').innerText = controls.getChar('char2');
+            document.getElementById('infochar3').innerText = controls.getChar('char3');
+            document.getElementById('infochar4').innerText = controls.getChar('char4');
+            document.getElementById('infochar5').innerText = controls.getChar('char5');
+            document.getElementById('infochar6').innerText = controls.getChar('char6');
+            document.getElementById('infochar7').innerText = controls.getChar('char7');
+
             modal.style.display="block";
 
         });
@@ -79,20 +89,25 @@ function About(){
 
         // Create paragraphs and headings with their respective content
         const paragraphs = [
-            "Tool created for workshop hostead at the CCH23",
+            "<h3>Cellular Automatas through Grafted Poetic Text</h3>",
+            "Tool created for workshop hostead at the 37C3",
             "<h3>WHAT IS IT</h3>",
-            "it is",
+            "Environment for live coding visuals with ASCII characters.",
             "<h3>HOW DO I USE IT</h3>",
-            "Writing in a square box.",
-            "ASCII characters are being interpreted as numbers updating rules of the simulation.",
+            "Writing in the square black box.",
+            "ASCII characters are being interpreted as numbers updating rules of the CA simulation.",
             "There are special characters under the square <b>Char Controls</b> which allow you to modify",
             "<ul>",
-            "  <li>camera luminosity threshold </li>",
-            "  <li>pixel size</li>",
-            "  <li>camera influence on simulation</li>",
-            "  <li>hue</li>",
+            `<li> <span id="infochar0">${controls.getChar(0)}</span>. Camera luminosity threshold </li>`,
+            `<li><span id="infochar1">${controls.getChar(1)}</span>. Pixel size.</li>`,
+            `<li><span id="infochar2">${controls.getChar(2)}</span>. Saturation.</li>`,
+            `<li><span id="infochar3">${controls.getChar(3)}</span>. Hue shift .</li>`,
+            `<li><span id="infochar4">${controls.getChar(4)}</span>. Mix with RGBSplit.</li>`,
+            `<li><span id="infochar5">${controls.getChar(5)}</span>. Amount of RGB offset.</li>`,
+            `<li><span id="infochar6">${controls.getChar(6)}</span>. Mix with spatial displacement.</li>`,
+            `<li><span id="infochar7">${controls.getChar(7)}</span>. Add motion to displacement.</li>`,
             "</ul>",
-            "For example, if the letter <b>e</b> controls the pixel size, writing many time the character you will see how the canvas changes."
+            `For example, if the char <b id=examplechar1>${controls.getChar(2)}</b> controls the pixel size, writing many time the character you will see how the canvas changes.`
         ];
 
         // Append the paragraphs to the form element

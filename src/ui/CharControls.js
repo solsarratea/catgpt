@@ -3,17 +3,17 @@ import interact from 'interactjs';
 function CharControls() {
 
     let charControls = {
-        char0: "a",
-        char1: "e",
-        char2: "1",
-        char3: "2",
-        char4: "3",
-        char5: "4",
-        char6: "5",
-        char7: "6",
-        char8: "7",
-    }
+        char0: "0",
+        char1: "1",
+        char2: "2",
+        char3: "3",
+        char4: "4",
+        char5: "5",
+        char6: "6",
+        char7: "7",
 
+    }
+    window.controls=charControls;
 
     const controls = initElements();
 
@@ -30,6 +30,13 @@ function CharControls() {
             console.log(`Input value changed to: ${newValue} for ${id}`);
 
             charControls[id] = newValue;
+
+            document.getElementById(`info${id}`).innerText = newValue;
+
+            if(id=='char1'){
+                document.getElementById('examplechar1').innerText = newValue;
+            }
+
         });
 
         parent.appendChild(input);
@@ -57,7 +64,6 @@ function CharControls() {
         const input1 = createInput('char1', charControls.char1, controlDiv);
         const input2 = createInput('char2', charControls.char2, controlDiv);
         const input3 = createInput('char3', charControls.char3, controlDiv);
-
         const input4 = createInput('char4', charControls.char4, controlDiv);
         const input5 = createInput('char5', charControls.char5, controlDiv);
         const input6 = createInput('char6', charControls.char6, controlDiv);
@@ -87,6 +93,9 @@ function CharControls() {
         return charControls;
     }
 
+    this.getChar = (id)=>{
+        return charControls[id];
+    }
 
     
 }

@@ -81,7 +81,5 @@ void main() {
   color = colorSaturate(color, mix(0.,1.2,1.-uOffset[2]));
 
 
-
-
   gl_FragColor = vec4(color, 1.0);
 }

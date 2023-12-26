@@ -6,14 +6,16 @@ import About from './ui/About';
 import saveAs from './libs/fileSaver';
 
 function UI(materials){
+    const rules = createRuleTable();
+
+
     const controls = new CharControls();
     const text = new TextInput({...materials, charControls: controls });
 
-
-    const about = new About();
+    const about = new About(controls);
     const screenShot = createScreenshot();
-    const rules = createRuleTable();
-
+    // hide & show:  <button class="button ascii">(･ω･)</button>
+    //<button class="button ascii">┴┤ω･)</button>
 
     function createScreenshot(){
         const div = document.createElement('div');
@@ -92,8 +94,8 @@ function UI(materials){
 
         titlecont.appendChild(but);
 
-        const initialX= window.innerWidth/1.16;
-        const initialY= window.innerHeight/6;
+        const initialX= window.innerWidth - 270;
+        const initialY= 150;
 
         div.style.transform = `translate(${initialX}px, ${initialY}px)`;
         div.setAttribute('data-x', initialX);
