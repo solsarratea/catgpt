@@ -155,3 +155,10 @@ button:hover {
     .modal::-webkit-scrollbar-thumb {
       border-bottom: 2px solid white;
     }
+
+
+    #showhide {
+
+        font-size:14px;
+
+    }

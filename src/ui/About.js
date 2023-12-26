@@ -107,7 +107,8 @@ function About(controls){
             `<li><span id="infochar6">${controls.getChar(6)}</span>. Mix with spatial displacement.</li>`,
             `<li><span id="infochar7">${controls.getChar(7)}</span>. Add motion to displacement.</li>`,
             "</ul>",
-            `For example, if the char <b id=examplechar1>${controls.getChar(2)}</b> controls the pixel size, writing many time the character you will see how the canvas changes.`
+            `For example, if the char <b id=examplechar1>${controls.getChar(2)}</b> controls the pixel size, writing many time the character you will see how the canvas changes.`,
+            "<a href=\"https://github.com/solsarratea/catgpt\" >See source code<\a>"
         ];
 
         // Append the paragraphs to the form element

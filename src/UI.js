@@ -14,8 +14,9 @@ function UI(materials){
 
     const about = new About(controls);
     const screenShot = createScreenshot();
-    // hide & show:  <button class="button ascii">(･ω･)</button>
-    //<button class="button ascii">┴┤ω･)</button>
+    let show = true;
+    const hideShow = createHideShowAll();
+
 
     function createScreenshot(){
         const div = document.createElement('div');
@@ -158,6 +159,66 @@ function UI(materials){
 
 
         return div;
+    }
+
+
+    function createHideShowAll(){
+        // hide & show:  <button class="button ascii"></button>
+        //<button class="button ascii"</button>
+      
+        const div = document.createElement('div');
+        div.className = 'editor';
+        div.id = 'showhide';
+        const initialX= 110;
+        const initialY=0;
+        div.style.transform = `translate(${initialX}px, ${initialY}px)`;
+        div.setAttribute('data-x', initialX);
+        div.setAttribute('data-y', initialY);
+
+        const but = document.createElement('button');
+        but.innerText = (show ? "(･ω･)" :"┴┤ω･)");
+        div.appendChild(but);
+
+
+        but.addEventListener('click', function(event) {
+            show = !show;
+            but.innerText = (show ? "(･ω･)" :"┴┤ω･)");
+            if (show){
+                document.getElementById("editor").style.display = 'block';
+                document.getElementById("controls").style.display = 'block';
+                document.getElementById("rules").style.display = 'block';
+                document.getElementById("sshot").style.display = 'block';
+                document.getElementById("aboutContainer").style.display = 'block';
+
+            }else{
+                document.getElementById("editor").style.display = 'none';
+                document.getElementById("controls").style.display = 'none';
+                document.getElementById("rules").style.display = 'none';
+                document.getElementById("sshot").style.display = 'none';
+                document.getElementById("aboutContainer").style.display = 'none';
+            }
+
+
+        });
+
+        const appElement = document.getElementById('app');
+        appElement.appendChild(div);
+
+
+        interact('#hideshow').draggable({
+            onmove: function (event) {
+                const target = event.target;
+                const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+                const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+                target.style.transform = `translate(${x}px, ${y}px)`;
+                target.setAttribute('data-x', x);
+                target.setAttribute('data-y', y);
+            }
+        })
+
+        return but;
+
     }
 
 
