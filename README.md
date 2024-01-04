@@ -1,6 +1,9 @@
 # CAT_gpt: Cellular Automatas Through Grafted Poetic Text
 
-Web app made for the  37C3
+Web app made for the  [37C3](https://events.ccc.de/category/37c3/)
+
+
+<img src="https://github.com/solsarratea/catgpt/assets/35222219/2749fe4f-441e-431c-ad5e-39a237de9a09" alt="image" width="50%" height="auto">
 
 ## What is it?
 
